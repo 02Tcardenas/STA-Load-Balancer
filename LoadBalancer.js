@@ -13,8 +13,9 @@ export default class LoadBalancer {
     // }
     // Los datos son de solo lectura y se actualizan durante la simulación.
 
-    this.next = 0;
     this.servers = Object.freeze([...servers]);
+    this.rotation = servers.flatMap((server) => Array(server.queue).fill(server.id));
+    this.next = 0;
   }
 
   async onRequestArrival(request, sendToServer) {
@@ -25,22 +26,10 @@ export default class LoadBalancer {
     //   work: 4              // Unidades de trabajo necesarias
     // }
 
-    const Servidor1_po = this.servers[0].power;
-    const Servidor2_po = this.servers[1].power;
-    const Servidor3_po = this.servers[2].power;
-    const Servidor4_po = this.servers[3].power;
-
-    const todo_powers = [Servidor1_po,Servidor2_po,Servidor3_po,Servidor4_po];
-
-    todo_powers.sort((a,b) => b-a);
-
-    
-
-    const server = this.servers[this.next];
-
-    this.next = (this.next + 1) % this.servers.length;
+    const serverId = this.rotation[this.next];
+    this.next = (this.next + 1) % this.rotation.length
 
     // Envía la petición al servidor y devuelve su respuesta al cliente.
-    return sendToServer(server.id);
+    return sendToServer(serverId);
   }
 }
