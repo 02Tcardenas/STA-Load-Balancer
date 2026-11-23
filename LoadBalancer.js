@@ -1,5 +1,3 @@
-import { scenarios } from './src/scenarios.js';
-
 export default class LoadBalancer {
   // import vite.config;
   // Очень важное примечание к этому заданию: все полезные нагрузки запросов должны быть заменены числовым значением строки. В противном случае задание будет считаться невыполненным.
@@ -14,6 +12,8 @@ export default class LoadBalancer {
     //   activeProgress: 0.25 // Progreso de 0 a 1 (0 si está libre)
     // }
     // Los datos son de solo lectura y se actualizan durante la simulación.
+
+    this.next = 0;
     this.servers = Object.freeze([...servers]);
   }
 
@@ -25,7 +25,20 @@ export default class LoadBalancer {
     //   work: 4              // Unidades de trabajo necesarias
     // }
 
-    const server = this.servers[0];
+    const Servidor1_po = this.servers[0].power;
+    const Servidor2_po = this.servers[1].power;
+    const Servidor3_po = this.servers[2].power;
+    const Servidor4_po = this.servers[3].power;
+
+    const todo_powers = [Servidor1_po,Servidor2_po,Servidor3_po,Servidor4_po];
+
+    todo_powers.sort((a,b) => b-a);
+
+    
+
+    const server = this.servers[this.next];
+
+    this.next = (this.next + 1) % this.servers.length;
 
     // Envía la petición al servidor y devuelve su respuesta al cliente.
     return sendToServer(server.id);
