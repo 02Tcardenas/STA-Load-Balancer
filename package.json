@@ -1,0 +1,21 @@
+{
+  "name": "sta-load-balancer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:offline": "vite build --mode projector && node scripts/rename-output.js",
+    "preview": "vite preview"
+  },
+  "engines": { "node": ">=22.12.0" },
+  "dependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "vite": "6.4.1",
+    "vite-plugin-singlefile": "2.3.0"
+  }
+}
